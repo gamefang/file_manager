@@ -8,7 +8,7 @@ export_on_save:
 ```mermaid
 graph TB
 
-Excel点击同步-->加载配置
+%%Excel点击同步-->加载配置
 加载配置-->加载Excel数据
 加载Excel数据-->Excel数据[(Excel数据)]
 加载Excel数据-->解析递归文件信息
@@ -25,7 +25,8 @@ Excel数据[(Excel数据)]-->数据融合
 - XlManager：实现Excel读写的功能
   - pandas
   - openpyxl
-- ConfManager：配置项的加载、读取、存储功能
+- ConfManager：配置项(ini)的加载、读取、存储功能
+  - configparser
 - FileManager：实际文件信息获取、递归文件目录获取等功能
   - os
 - DataManager：数据融合、比较、冲突记录
