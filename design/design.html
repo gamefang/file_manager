@@ -265,14 +265,16 @@ pre[data-line] .line-highlight[data-end]:after {
 
 <div class="mermaid">graph TB
 
-%%Excel点击同步--&gt;加载配置
+点击Python程序--&gt;检查Excel文件{检查Excel文件}
+检查Excel文件--有效--&gt;加载配置
+检查Excel文件--无效--&gt;生成Excel文件--&gt;加载配置
 加载配置--&gt;加载Excel数据
-加载Excel数据--&gt;Excel数据[(Excel数据)]
+加载Excel数据-.-&gt;Excel数据[(Excel数据)]
 加载Excel数据--&gt;解析递归文件信息
-解析递归文件信息--&gt;文件数据[(文件数据)]
+解析递归文件信息-.-&gt;文件数据[(文件数据)]
 解析递归文件信息--&gt;数据融合
-Excel数据[(Excel数据)]--&gt;数据融合
-文件数据[(文件数据)]--&gt;数据融合
+Excel数据[(Excel数据)]-.-&gt;数据融合
+文件数据[(文件数据)]-.-&gt;数据融合
 数据融合--&gt;冲突记录
 冲突记录--&gt;写入Excel数据
 </div><h2 class="mume-header" id="%E8%84%9A%E6%9C%AC%E7%BB%93%E6%9E%84">脚本结构</h2>
@@ -285,9 +287,11 @@ Excel数据[(Excel数据)]--&gt;数据融合
 <li>openpyxl</li>
 </ul>
 </li>
-<li>ConfManager：配置项(ini)的加载、读取、存储功能
+<li>ConfManager：配置项的加载、读取、存储功能
 <ul>
-<li>configparser</li>
+<li>os</li>
+<li>json</li>
+<li>codes</li>
 </ul>
 </li>
 <li>FileManager：实际文件信息获取、递归文件目录获取等功能
