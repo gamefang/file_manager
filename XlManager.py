@@ -1,17 +1,55 @@
 # -*- coding: utf-8 -*-
 
-import pandas as pd
+import os
 from openpyxl import load_workbook
 
 class XlManager():
     '''
     实现Excel读写的功能
-    TODO 隐藏文件过滤
     '''
+    # 当前加载的Excel文件
+    CUR_WB = None
+
+    @classmethod
+    def load_cur_file(cls,fp):
+        '''
+        加载当前使用的Excel文件，供随时访问
+        '''
+        fp = os.path.normcase(fp)
+        if os.path.exists(fp):
+            cls.CUR_WB = load_workbook(filename = fp)
+
+    @classmethod
+    def fetch_name(cls,defined_name,is_return_cell=False):
+        '''
+        从当前的Excel文件中，加载名称对应的数据
+        @param defined_name: Excel中定义的名称
+        @param is_return_cell: 是否返回cell对象
+        @return: cell对象或列表；泛型数值或列表
+        '''
+        if not cls.CUR_WB:return
+        dn = cls.CUR_WB.defined_names[defined_name]
+        cells = []
+        for k,v in dn.destinations:
+            ws = cls.CUR_WB[k]
+            cells.append(ws[v])
+        cells = cells[0]    # 去掉无用的列表层
+        # 返回cell对象
+        if is_return_cell:
+            return cells
+        # 返回值
+        if type(cells) is tuple: # 区域
+            return [ cell.value
+                for cell in cells
+                if cell.value
+                ][1:]
+        else:   # 单独单元格
+            return cells.value
 
     @staticmethod
     def write_to_excel(data,fp,sheet_name):
         '''
+        TODO: 待优化，精确至cell
         写入数据至Excel文件中
         '''
         workbook = load_workbook(filename = fp)
@@ -36,5 +74,21 @@ class XlManager():
             sheet.append(line_data)
         workbook.save(filename = fp)
 
+    # @staticmethod
+    # def get_cell(fp,defined_name=None,sheet_name=None,cell=None):
+    #     '''
+    #     获取某Excel文件某Sheet的单独单元格数据
+    #     @param fp: Excel文件
+    #     @param defined_name: Excel中定义的名称。如无，则使用sheet+cell的定位方法
+    #     @param sheet_name: Excel文件中的sheet名
+    #     @param cell: Excel文件中的cell名
+    #     @return: 泛型的Excel数据
+    #     '''
+    #     return result
+
 if __name__ == '__main__':
-    pass
+    XlManager.load_cur_file('FileManager.xlsx')
+    res = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
+    print(res)
+    res = XlManager.fetch_name('rEXT_WHITELIST')
+    print(res)

@@ -4,6 +4,8 @@ import os
 import json
 import codecs
 
+from XlManager import XlManager as XlManager
+
 class ConfManager():
     '''
     配置项的加载、读取、存储功能
@@ -49,10 +51,17 @@ class ConfManager():
     @classmethod
     def load_excel_cfg(cls):
         '''
-        加载Excel配置
+        初始化及加载Excel配置
         '''
-        pass
-
+        # TODO 检查Excel是否未关闭
+        cls.EXCEL = {}
+        cls.EXCEL["BASE_FOLDER"] = XlManager.fetch_name('BASE_FOLDER')
+        cls.EXCEL["NO_HIDDEN_FILES_WIN"] = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
+        cls.EXCEL["NO_HIDDEN_FILES_POINT"] = XlManager.fetch_name('NO_HIDDEN_FILES_POINT')
+        cls.EXCEL["NO_FOLDERS"] = XlManager.fetch_name('NO_FOLDERS')
+        cls.EXCEL["rIGNORE_FOLDERS"] = XlManager.fetch_name('rIGNORE_FOLDERS')
+        cls.EXCEL["rEXT_BLACKLIST"] = XlManager.fetch_name('rEXT_BLACKLIST')
+        cls.EXCEL["rEXT_WHITELIST"] = XlManager.fetch_name('rEXT_WHITELIST')
 
 # import configparser
 #

@@ -11,6 +11,7 @@ def main():
     # 加载配置
     CFG.load_basic_cfg()
     # 加载Excel数据
+    XlManager.load_cur_file(CFG.BASE['EXCEL_FILE_PATH'])
     CFG.load_excel_cfg()
     # 解析递归文件信息
     file_data = FileManager.get_file_data()

@@ -25,7 +25,6 @@ Excel数据[(Excel数据)]-.->数据融合
 ## 脚本结构
 - Main：主流程
 - XlManager：实现Excel读写的功能
-  - pandas
   - openpyxl
 - ConfManager：配置项的加载、读取、存储功能
   - os
@@ -63,3 +62,15 @@ data = {
   ...
 }
 ```
+
+## 配置项
+
+key|名称|类型|默认值|Excel默认位置|说明
+--|--|--|--|--|--
+BASE_FOLDER|起始文件夹|string||B2|递归搜索的文件夹起点，留空即Excel文件所属文件夹
+NO_HIDDEN_FILES_WIN|排除隐藏文件（Windows）|bool|True|B5|不输出Windows环境下的隐藏文件至列表中
+NO_HIDDEN_FILES_POINT|排除.开头的文件及文件夹|bool|True|B6|不输出以.开头的隐藏文件或文件夹至列表中（Linux等环境下的隐藏文件）
+NO_FOLDERS|不输出文件夹|bool|False|B7|只输出文件，不输出文件夹至列表中
+rIGNORE_FOLDERS|忽略的文件夹|list(Excel的Range)||D:D|不输出至列表的文件夹，数量不限。如绝对路径中存在其中内容，则会跳过
+rEXT_BLACKLIST|文件后缀黑名单|list(Excel的Range)||F:F|文件后缀如在黑名单中，则不会输出至列表中
+rEXT_WHITELIST|文件后缀白名单|list(Excel的Range)||H:H|只有在白名单中的文件后缀，才会输出至列表中
