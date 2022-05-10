@@ -10,8 +10,11 @@ from FileManager import FileManager as FileManager
 def main():
     # 加载配置
     CFG.load_basic_cfg()
+    EXCEL_FILE_PATH = CFG.BASE['EXCEL_FILE_PATH']
     # 加载Excel数据
-    XlManager.load_cur_file(CFG.BASE['EXCEL_FILE_PATH'])
+    if XlManager.is_excel_opened(EXCEL_FILE_PATH):
+        raise Exception(f'请先关闭文件：{EXCEL_FILE_PATH}')
+    XlManager.load_cur_file(EXCEL_FILE_PATH)
     CFG.load_excel_cfg()
     # 解析递归文件信息
     file_data = FileManager.get_file_data()

@@ -14,6 +14,7 @@ class XlManager():
     def load_cur_file(cls,fp):
         '''
         加载当前使用的Excel文件，供随时访问
+        @param fp: Excel文件路径
         '''
         fp = os.path.normcase(fp)
         if os.path.exists(fp):
@@ -73,6 +74,18 @@ class XlManager():
                 ]
             sheet.append(line_data)
         workbook.save(filename = fp)
+
+    @staticmethod
+    def is_excel_opened(fp):
+        '''
+        判断Excel文件是否已打开（通过是否生成了~$文件判定）
+        @param fp: Excel文件路径
+        @return: bool
+        '''
+        fp = os.path.normcase(fp)
+        dir_name,file_name = os.path.split(fp)
+        hidden_fp = os.path.join(dir_name,'~$' + file_name)
+        return os.path.exists(hidden_fp)
 
     # @staticmethod
     # def get_cell(fp,defined_name=None,sheet_name=None,cell=None):

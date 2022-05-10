@@ -53,7 +53,6 @@ class ConfManager():
         '''
         初始化及加载Excel配置
         '''
-        # TODO 检查Excel是否未关闭
         cls.EXCEL = {}
         cls.EXCEL["BASE_FOLDER"] = XlManager.fetch_name('BASE_FOLDER')
         cls.EXCEL["NO_HIDDEN_FILES_WIN"] = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
