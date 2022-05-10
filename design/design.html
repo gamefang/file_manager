@@ -319,9 +319,9 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <tr>
 <td>key</td>
 <td>key</td>
-<td>float</td>
+<td>string</td>
 <td>代码</td>
-<td>修改时间+文件大小 拼接而成</td>
+<td>由其余数据拼接而成，可由用户自定义</td>
 </tr>
 <tr>
 <td>label1</td>
@@ -437,7 +437,6 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <th>名称</th>
 <th>类型</th>
 <th>默认值</th>
-<th>Excel默认位置</th>
 <th>说明</th>
 </tr>
 </thead>
@@ -447,15 +446,20 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>起始文件夹</td>
 <td>string</td>
 <td></td>
-<td>B2</td>
 <td>递归搜索的文件夹起点，留空即Excel文件所属文件夹</td>
+</tr>
+<tr>
+<td>AUTO_BACKUP</td>
+<td>生成列表前自动备份</td>
+<td>bool</td>
+<td>True</td>
+<td>自动备份list文件，生成备份sheet</td>
 </tr>
 <tr>
 <td>NO_HIDDEN_FILES_WIN</td>
 <td>排除隐藏文件（Windows）</td>
 <td>bool</td>
 <td>True</td>
-<td>B5</td>
 <td>不输出Windows环境下的隐藏文件至列表中</td>
 </tr>
 <tr>
@@ -463,7 +467,6 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>排除.开头的文件及文件夹</td>
 <td>bool</td>
 <td>True</td>
-<td>B6</td>
 <td>不输出以.开头的隐藏文件或文件夹至列表中（Linux等环境下的隐藏文件）</td>
 </tr>
 <tr>
@@ -471,7 +474,6 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>不输出文件夹</td>
 <td>bool</td>
 <td>False</td>
-<td>B7</td>
 <td>只输出文件，不输出文件夹至列表中</td>
 </tr>
 <tr>
@@ -479,7 +481,6 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>忽略的文件夹</td>
 <td>list(Excel的Range)</td>
 <td></td>
-<td>D:D</td>
 <td>不输出至列表的文件夹，数量不限。如绝对路径中存在其中内容，则会跳过</td>
 </tr>
 <tr>
@@ -487,7 +488,6 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>文件后缀黑名单</td>
 <td>list(Excel的Range)</td>
 <td></td>
-<td>F:F</td>
 <td>文件后缀如在黑名单中，则不会输出至列表中</td>
 </tr>
 <tr>
@@ -495,11 +495,24 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>文件后缀白名单</td>
 <td>list(Excel的Range)</td>
 <td></td>
-<td>H:H</td>
 <td>只有在白名单中的文件后缀，才会输出至列表中</td>
+</tr>
+<tr>
+<td>rKEY_MODE</td>
+<td>索引构成方式</td>
+<td>list(Excel的Range)</td>
+<td>[mtime,size]</td>
+<td>索引的构成方式，影响确定文件的方法，由key以外的字段拼接而成</td>
 </tr>
 </tbody>
 </table>
+<h2 class="mume-header" id="%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD">支持的功能</h2>
+
+<ul>
+<li>list页结构调整：可在key所在行之上任意添加行，可修改key下一行的文字描述，可调换所有字段的前后顺序（需确保key在最前）</li>
+<li>config页结构调整：可任意调整各类config的位置</li>
+<li>自定义Excel文件及Sheet名称：通过修改json文件</li>
+</ul>
 
       </div>
       

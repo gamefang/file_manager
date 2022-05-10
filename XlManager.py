@@ -47,33 +47,56 @@ class XlManager():
         else:   # 单独单元格
             return cells.value
 
+    @classmethod
+    def write_data_to_excel(cls,data,CFG):
+        '''
+        写入最终数据至Excel文件中
+        @param data: 待写入data（来自FileManager的处理结果）
+        @CFG: 配置信息，来自ConfManager
+        '''
+        workbook = cls.CUR_WB
+        sheet_name = CFG.BASE['LIST_SHEET_NAME']
+        if sheet_name not in workbook.sheetnames:
+            raise Exception('Excel file wrong!')
+        # sheet备份（自动加顺序号）
+        if CFG.EXCEL['AUTO_BACKUP']:
+            sheet_copy = workbook.copy_worksheet(workbook[sheet_name])
+        # 使用原sheet
+        ws = workbook[sheet_name]
+        # 表头提取
+        head_start_cell = cls.get_cell_by_value(ws,'key')
+        head_row = ws[head_start_cell.row]
+        # 根据表头确定输出字段顺序
+        output_params = [cell.value for cell in head_row]
+        # 清空无用表格行（保留表头下方文字表头行）
+        ws.delete_rows(head_start_cell.row + 2, ws.max_row)
+        # 按顺序输出
+        p_row = head_start_cell.row + 2 # row指针
+        for _,v in data.items():
+            p_col = head_start_cell.column # col指针
+            for item in output_params:
+                cur_cell = ws.cell(
+                    column = p_col,
+                    row = p_row,
+                    value = v.get(item,''), # 留空不存在数据
+                )
+                p_col += 1
+            p_row += 1
+        # 存储
+        workbook.save(CFG.BASE['EXCEL_FILE_PATH'])
+
     @staticmethod
-    def write_to_excel(data,fp,sheet_name):
+    def get_cell_by_value(sheet,value):
         '''
-        TODO: 待优化，精确至cell
-        写入数据至Excel文件中
+        按值获取单元格对象（先横后纵，取第一个值）
+        @param sheet: 值所在的Excel工作表
+        @param value: 所需的值
+        @return: cell对象
         '''
-        workbook = load_workbook(filename = fp)
-        # 同名sheet备份
-        if sheet_name in workbook.sheetnames:
-            bak_sheet_name = sheet_name + '_bak'
-            if bak_sheet_name in workbook.sheetnames:
-                workbook.remove_sheet(workbook[bak_sheet_name])
-            workbook[sheet_name].title = bak_sheet_name
-        # 创建新sheet
-        sheet = workbook.create_sheet(sheet_name,0)
-        # 输出表头
-        table_head = [
-            '文件名','扩展名','是文件夹','文件路径','文件大小','创建时间','修改时间','访问时间'
-            ]
-        sheet.append(table_head)
-        # 输出数据内容
-        for k,v in data.items():
-            line_data = [
-                v['filename'],v['ext'],v['is_folder'],v['path'],v['size'],v['ctime'],v['mtime'],v['atime']
-                ]
-            sheet.append(line_data)
-        workbook.save(filename = fp)
+        for row in sheet.iter_rows():
+            for cell in row:
+                if cell.value == value:
+                    return cell
 
     @staticmethod
     def is_excel_opened(fp):
@@ -86,18 +109,6 @@ class XlManager():
         dir_name,file_name = os.path.split(fp)
         hidden_fp = os.path.join(dir_name,'~$' + file_name)
         return os.path.exists(hidden_fp)
-
-    # @staticmethod
-    # def get_cell(fp,defined_name=None,sheet_name=None,cell=None):
-    #     '''
-    #     获取某Excel文件某Sheet的单独单元格数据
-    #     @param fp: Excel文件
-    #     @param defined_name: Excel中定义的名称。如无，则使用sheet+cell的定位方法
-    #     @param sheet_name: Excel文件中的sheet名
-    #     @param cell: Excel文件中的cell名
-    #     @return: 泛型的Excel数据
-    #     '''
-    #     return result
 
 if __name__ == '__main__':
     XlManager.load_cur_file('FileManager.xlsx')
