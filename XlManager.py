@@ -48,11 +48,58 @@ class XlManager():
             return cells.value
 
     @classmethod
+    def load_excel_data(cls,CFG):
+        '''
+        加载Excel文件中的数据
+        @param CFG: 配置信息，来自ConfManager
+        @return: 文件数据字典
+        '''
+        file_data = {}
+        workbook = cls.CUR_WB
+        sheet_name = CFG.BASE['LIST_SHEET_NAME']
+        if sheet_name not in workbook.sheetnames:
+            raise Exception('Excel file wrong!')
+        ws = workbook[sheet_name]
+        # 表头提取
+        head_start_cell = cls.get_cell_by_value(ws,'key')
+        head_row = ws[head_start_cell.row]
+        # 根据表头确定输出字段顺序
+        output_params = [cell.value for cell in head_row]
+        # 按行提取数据
+        for p_row in range(head_start_cell.row + 2, ws.max_row + 1):
+            cur_row = ws[p_row]
+            cur_dic = {}
+            for num,cell in enumerate(cur_row):
+                if num == 0:continue
+                cur_dic[output_params[num]] = cell.value
+            # 确定key
+            if cur_row[0].value:  # 使用已有
+                key = cur_row[0].value
+            else:   # 按规则新编
+                key = ''
+                key_list = [
+                    str(cur_dic[item])
+                    for item in CFG.EXCEL['rKEY_MODE']
+                ]
+                key = '|'.join(key_list)
+            if key in file_data.keys(): # 有重号key
+                subfix = 1
+                while 1:    # 持续顺序编号直至不重号
+                    try_new_key = f'{key}+{subfix}'
+                    if f'{key}+{subfix}' in file_data.keys():
+                        subfix += 1
+                    else:
+                        key = try_new_key
+                        break
+            file_data[key] = cur_dic
+        return file_data
+
+    @classmethod
     def write_data_to_excel(cls,data,CFG):
         '''
         写入最终数据至Excel文件中
         @param data: 待写入data（来自FileManager的处理结果）
-        @CFG: 配置信息，来自ConfManager
+        @param CFG: 配置信息，来自ConfManager
         '''
         workbook = cls.CUR_WB
         sheet_name = CFG.BASE['LIST_SHEET_NAME']

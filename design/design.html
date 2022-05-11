@@ -506,7 +506,24 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 </tr>
 </tbody>
 </table>
-<h2 class="mume-header" id="%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD">支持的功能</h2>
+<h2 class="mume-header" id="key%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99">key生成规则</h2>
+
+<ul>
+<li>遵循用户 KEY_MODE 定义规则，按顺序将定义项的值转化为字符串，并使用<code>|</code>拼接。</li>
+<li>如拼接后的字符串key已存在，则在后面后缀<code>+n</code>，从<code>+1</code>开始，<code>+1</code>存在则<code>+2</code>，以此类推。</li>
+</ul>
+<pre data-role="codeBlock" data-info="py" class="language-python"><span class="token comment"># 示例</span>
+KEY_MODE <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'mtime'</span><span class="token punctuation">,</span><span class="token string">'size'</span><span class="token punctuation">]</span>
+mtime <span class="token operator">=</span> <span class="token number">1651909589.183366</span>
+size <span class="token operator">=</span> <span class="token number">2261</span>
+
+key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261'</span>
+<span class="token comment"># 如'1651909589.183366|2261'已存在，则</span>
+key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261+1'</span>
+<span class="token comment"># 如'1651909589.183366|2261+1'仍存在，则</span>
+key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261+2'</span>
+……
+</pre><h2 class="mume-header" id="%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD">支持的功能</h2>
 
 <ul>
 <li>list页结构调整：可在key所在行之上任意添加行，可修改key下一行的文字描述，可调换所有字段的前后顺序（需确保key在最前）</li>
