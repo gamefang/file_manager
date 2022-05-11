@@ -18,12 +18,12 @@ def main():
     CFG.load_excel_cfg()
     # 加载Excel数据
     excel_data = XlManager.load_excel_data(CFG)
-    # TODO 解析递归文件信息
-    real_data = FileManager.get_file_data()
-    # TODO 数据融合及冲突检查
-    file_data = real_data
+    # 解析递归文件信息
+    file_data = FileManager.get_file_data(CFG)
+    # 数据融合及冲突检查
+    final_data = FileManager.get_merged_data(excel_data,file_data,CFG)
     # 写入最终版本Excel数据
-    XlManager.write_data_to_excel(file_data,CFG)
+    XlManager.write_data_to_excel(final_data,CFG)
 
 if __name__ == '__main__':
     import time

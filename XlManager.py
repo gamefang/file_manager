@@ -3,6 +3,8 @@
 import os
 from openpyxl import load_workbook
 
+from FileManager import FileManager as FileManager
+
 class XlManager():
     '''
     实现Excel读写的功能
@@ -72,25 +74,16 @@ class XlManager():
             for num,cell in enumerate(cur_row):
                 if num == 0:continue
                 cur_dic[output_params[num]] = cell.value
+                if type(cell.value) is float:   # 浮点数整型化
+                    cell.value = int(cell.value)
             # 确定key
-            if cur_row[0].value:  # 使用已有
-                key = cur_row[0].value
-            else:   # 按规则新编
-                key = ''
-                key_list = [
-                    str(cur_dic[item])
-                    for item in CFG.EXCEL['rKEY_MODE']
-                ]
-                key = '|'.join(key_list)
-            if key in file_data.keys(): # 有重号key
-                subfix = 1
-                while 1:    # 持续顺序编号直至不重号
-                    try_new_key = f'{key}+{subfix}'
-                    if f'{key}+{subfix}' in file_data.keys():
-                        subfix += 1
-                    else:
-                        key = try_new_key
-                        break
+            list_keys = file_data.keys()
+            if cur_row[0].value:
+                cur_key = cur_row[0].value
+            else:
+                cur_key = None
+            key = FileManager.get_key(cur_dic,CFG,list_keys,cur_key)
+            # 数据记录
             file_data[key] = cur_dic
         return file_data
 
@@ -119,13 +112,20 @@ class XlManager():
         ws.delete_rows(head_start_cell.row + 2, ws.max_row)
         # 按顺序输出
         p_row = head_start_cell.row + 2 # row指针
-        for _,v in data.items():
+        for k,v in data.items():
             p_col = head_start_cell.column # col指针
             for item in output_params:
+                # 输出各字段
+                if item == 'key':
+                    cur_v = k
+                elif item == 'hyperlink':
+                    cur_v = f'=HYPERLINK("{v["path"]}","打开")'
+                else:
+                    cur_v = v.get(item,'')  # 留空不存在数据
                 cur_cell = ws.cell(
                     column = p_col,
                     row = p_row,
-                    value = v.get(item,''), # 留空不存在数据
+                    value = cur_v,
                 )
                 p_col += 1
             p_row += 1

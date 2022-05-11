@@ -324,6 +324,13 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <td>由其余数据拼接而成，可由用户自定义</td>
 </tr>
 <tr>
+<td>status</td>
+<td>状态</td>
+<td>string</td>
+<td>代码</td>
+<td>版本状态枚举：new/del/mod</td>
+</tr>
+<tr>
 <td>label1</td>
 <td>标签1</td>
 <td>string</td>
@@ -396,21 +403,21 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 <tr>
 <td>ctime</td>
 <td>创建时间</td>
-<td>float</td>
+<td>int</td>
 <td>代码</td>
-<td></td>
+<td>Excel浮点数不稳，改用整数</td>
 </tr>
 <tr>
 <td>mtime</td>
 <td>修改时间</td>
-<td>float</td>
+<td>int</td>
 <td>代码</td>
 <td></td>
 </tr>
 <tr>
 <td>atime</td>
 <td>访问时间</td>
-<td>float</td>
+<td>int</td>
 <td>代码</td>
 <td></td>
 </tr>
@@ -514,14 +521,14 @@ Excel数据[(Excel数据)]-.-&gt;数据融合
 </ul>
 <pre data-role="codeBlock" data-info="py" class="language-python"><span class="token comment"># 示例</span>
 KEY_MODE <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'mtime'</span><span class="token punctuation">,</span><span class="token string">'size'</span><span class="token punctuation">]</span>
-mtime <span class="token operator">=</span> <span class="token number">1651909589.183366</span>
+mtime <span class="token operator">=</span> <span class="token number">1651909589</span>
 size <span class="token operator">=</span> <span class="token number">2261</span>
 
-key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261'</span>
-<span class="token comment"># 如'1651909589.183366|2261'已存在，则</span>
-key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261+1'</span>
-<span class="token comment"># 如'1651909589.183366|2261+1'仍存在，则</span>
-key <span class="token operator">=</span> <span class="token string">'1651909589.183366|2261+2'</span>
+key <span class="token operator">=</span> <span class="token string">'1651909589|2261'</span>
+<span class="token comment"># 如'1651909589|2261'已存在，则</span>
+key <span class="token operator">=</span> <span class="token string">'1651909589|2261+1'</span>
+<span class="token comment"># 如'1651909589|2261+1'仍存在，则</span>
+key <span class="token operator">=</span> <span class="token string">'1651909589|2261+2'</span>
 ……
 </pre><h2 class="mume-header" id="%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD">支持的功能</h2>
 
