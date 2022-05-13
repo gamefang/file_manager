@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
 from openpyxl import load_workbook
 
 from FileManager import FileManager as FileManager
@@ -115,11 +116,24 @@ class XlManager():
         for k,v in data.items():
             p_col = head_start_cell.column # col指针
             for item in output_params:
-                # 输出各字段
+                # 输出key
                 if item == 'key':
                     cur_v = k
+                # 自动套用公式
                 elif item == 'hyperlink':
-                    cur_v = f'=HYPERLINK("{v["path"]}","打开")'
+                    ref_cell_addr = ws.cell(p_row,output_params.index('path')+1).coordinate
+                    cur_v = f'=HYPERLINK({ref_cell_addr},"打开")'
+                elif item == 'filetype':
+                    ref_cell_addr = ws.cell(p_row,output_params.index('ext')+1).coordinate
+                    cur_v = f'=IF({ref_cell_addr}="","",VLOOKUP({ref_cell_addr},rEXT_TO_TYPE,2,))'
+                # 时间戳处理
+                elif item in ('c_time','m_time','a_time'):
+                    cur_timestamp = v.get(item.replace('_',''))
+                    if cur_timestamp:
+                        cur_v = cls.timestamp_to_str(cur_timestamp)
+                    else:
+                        cur_v = ''
+                # 正常输出各字段
                 else:
                     cur_v = v.get(item,'')  # 留空不存在数据
                 cur_cell = ws.cell(
@@ -156,6 +170,17 @@ class XlManager():
         dir_name,file_name = os.path.split(fp)
         hidden_fp = os.path.join(dir_name,'~$' + file_name)
         return os.path.exists(hidden_fp)
+
+    @staticmethod
+    def timestamp_to_str(timestamp):
+        '''
+        时间戳转字符串时间
+        @param timestamp: 时间戳
+        @return: 字符串时间
+        '''
+        time_array = time.localtime(timestamp)
+        return time.strftime('%Y-%m-%d %H:%M:%S',time_array)
+
 
 if __name__ == '__main__':
     XlManager.load_cur_file('FileManager.xlsx')
