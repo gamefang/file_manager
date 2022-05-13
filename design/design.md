@@ -73,10 +73,11 @@ AUTO_BACKUP|生成列表前自动备份|bool|True|自动备份list文件，生�
 NO_HIDDEN_FILES_WIN|排除隐藏文件（Windows）|bool|True|不输出Windows环境下的隐藏文件至列表中
 NO_HIDDEN_FILES_POINT|排除.开头的文件及文件夹|bool|True|不输出以.开头的隐藏文件或文件夹至列表中（Linux等环境下的隐藏文件）
 NO_FOLDERS|不输出文件夹|bool|False|只输出文件，不输出文件夹至列表中
-rIGNORE_FOLDERS|忽略的文件夹|list(Excel的Range)||不输出至列表的文件夹，数量不限。如绝对路径中存在其中内容，则会跳过
-rEXT_BLACKLIST|文件后缀黑名单|list(Excel的Range)||文件后缀如在黑名单中，则不会输出至列表中
-rEXT_WHITELIST|文件后缀白名单|list(Excel的Range)||只有在白名单中的文件后缀，才会输出至列表中
+rIGNORE_KEYWORDS|忽略的关键字|list(Excel的Range)||不输出至列表的绝对路径关键字，存在于文件夹和文件名中的均有效，数量不限
+rEXT_BLACKLIST|扩展名黑名单|list(Excel的Range)||文件后缀如在黑名单中，则不会输出至列表中
+rEXT_WHITELIST|扩展名白名单|list(Excel的Range)||只有在白名单中的文件后缀，才会输出至列表中
 rKEY_MODE|索引构成方式|list(Excel的Range)|[mtime,size]|索引的构成方式，影响确定文件的方法，由key以外的字段拼接而成
+rEXT_TO_TYPE|扩展名文件类型映射|list(Excel的Range)||用于vlookup公式映射，代码中不直接引用
 
 ## key生成规则
 - 遵循用户 KEY_MODE 定义规则，按顺序将定义项的值转化为字符串，并使用`|`拼接。

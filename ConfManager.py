@@ -59,7 +59,7 @@ class ConfManager():
         cls.EXCEL["NO_HIDDEN_FILES_WIN"] = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
         cls.EXCEL["NO_HIDDEN_FILES_POINT"] = XlManager.fetch_name('NO_HIDDEN_FILES_POINT')
         cls.EXCEL["NO_FOLDERS"] = XlManager.fetch_name('NO_FOLDERS')
-        cls.EXCEL["rIGNORE_FOLDERS"] = XlManager.fetch_name('rIGNORE_FOLDERS')
+        cls.EXCEL["rIGNORE_KEYWORDS"] = XlManager.fetch_name('rIGNORE_KEYWORDS')
         cls.EXCEL["rEXT_BLACKLIST"] = XlManager.fetch_name('rEXT_BLACKLIST')
         cls.EXCEL["rEXT_WHITELIST"] = XlManager.fetch_name('rEXT_WHITELIST')
         cls.EXCEL["rKEY_MODE"] = XlManager.fetch_name('rKEY_MODE')
