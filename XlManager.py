@@ -4,7 +4,7 @@ import os
 import time
 from openpyxl import load_workbook
 
-from FileManager import FileManager as FileManager
+from DataManager import DataManager as DataManager
 
 class XlManager():
     '''
@@ -73,19 +73,20 @@ class XlManager():
             cur_row = ws[p_row]
             cur_dic = {}
             for num,cell in enumerate(cur_row):
-                if num == 0:continue
+                # 跳过key以及没有值的单元格
+                if num == 0 or cell.value is None:continue
                 cur_dic[output_params[num]] = cell.value
-                if type(cell.value) is float:   # 浮点数整型化
-                    cell.value = int(cell.value)
             # 确定key
             list_keys = file_data.keys()
             if cur_row[0].value:
                 cur_key = cur_row[0].value
             else:
                 cur_key = None
-            key = FileManager.get_key(cur_dic,CFG,list_keys,cur_key)
+            key = DataManager.get_key(cur_dic,CFG,list_keys,cur_key)
             # 数据记录
             file_data[key] = cur_dic
+        # 强制备份Excel数据
+        DataManager.backup_data(file_data)
         return file_data
 
     @classmethod

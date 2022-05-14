@@ -56,6 +56,7 @@ class ConfManager():
         cls.EXCEL = {}
         cls.EXCEL["BASE_FOLDER"] = XlManager.fetch_name('BASE_FOLDER')
         cls.EXCEL["AUTO_BACKUP"] = XlManager.fetch_name('AUTO_BACKUP')
+        cls.EXCEL["AUTO_DEL_IGNORED"] = XlManager.fetch_name('AUTO_DEL_IGNORED')
         cls.EXCEL["NO_HIDDEN_FILES_WIN"] = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
         cls.EXCEL["NO_HIDDEN_FILES_POINT"] = XlManager.fetch_name('NO_HIDDEN_FILES_POINT')
         cls.EXCEL["NO_FOLDERS"] = XlManager.fetch_name('NO_FOLDERS')
