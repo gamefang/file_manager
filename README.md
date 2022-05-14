@@ -26,7 +26,7 @@
 
 ## 设计文档
 
-[设计文档](design/design.html)
+[设计文档](design/design.md)
 
 ## 问题记录
 

@@ -1,8 +1,3 @@
----
-export_on_save:
-    html: true
----
-
 ## 流程
 
 ```mermaid
@@ -66,7 +61,7 @@ data = {
 ## 配置项
 
 key|名称|类型|默认值|说明
---|--|--|--|--|--
+--|--|--|--|--
 BASE_FOLDER|起始文件夹|string||递归搜索的文件夹起点，留空即Excel文件所属文件夹
 AUTO_BACKUP|生成列表前自动备份|bool|False|自动备份list文件，生成备份sheet
 AUTO_DEL_IGNORED|自动删除被排除文件数据|bool|True|如文件行被标记为del，则自动删除（可能导致部分自定义数据丢失）
