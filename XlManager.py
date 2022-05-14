@@ -58,7 +58,7 @@ class XlManager():
         @return: 文件数据字典
         '''
         file_data = {}
-        workbook = cls.CUR_WB
+        workbook = load_workbook(filename = CFG.BASE['EXCEL_FILE_PATH'], read_only=True)
         sheet_name = CFG.BASE['LIST_SHEET_NAME']
         if sheet_name not in workbook.sheetnames:
             raise Exception('Excel file wrong!')
@@ -85,6 +85,7 @@ class XlManager():
             key = DataManager.get_key(cur_dic,CFG,list_keys,cur_key)
             # 数据记录
             file_data[key] = cur_dic
+        workbook.close()
         # 强制备份Excel数据
         DataManager.backup_data(file_data)
         return file_data
@@ -123,10 +124,10 @@ class XlManager():
                 # 自动套用公式
                 elif item == 'hyperlink':
                     ref_cell_addr = ws.cell(p_row,output_params.index('path')+1).coordinate
-                    cur_v = f'=HYPERLINK({ref_cell_addr},"打开")'
+                    cur_v = f'=HYPERLINK(BASE_FOLDER&"/"&{ref_cell_addr},"打开")'
                 elif item == 'filetype':
                     ref_cell_addr = ws.cell(p_row,output_params.index('ext')+1).coordinate
-                    cur_v = f'=IF({ref_cell_addr}="","",VLOOKUP({ref_cell_addr},rEXT_TO_TYPE,2,))'
+                    cur_v = f'=IFERROR(VLOOKUP({ref_cell_addr},rEXT_TO_TYPE,2,),"")'
                 # 时间戳处理
                 elif item in ('c_time','m_time','a_time'):
                     cur_timestamp = v.get(item.replace('_',''))

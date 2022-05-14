@@ -54,7 +54,11 @@ class ConfManager():
         初始化及加载Excel配置
         '''
         cls.EXCEL = {}
-        cls.EXCEL["BASE_FOLDER"] = XlManager.fetch_name('BASE_FOLDER')
+        folder_cell = XlManager.fetch_name('BASE_FOLDER',is_return_cell=True)
+        if folder_cell.value:  # 规范化路径字符串
+            tmp_path = os.path.normpath(folder_cell.value)
+            folder_cell.value = tmp_path
+        cls.EXCEL["BASE_FOLDER"] = folder_cell.value
         cls.EXCEL["AUTO_BACKUP"] = XlManager.fetch_name('AUTO_BACKUP')
         cls.EXCEL["AUTO_DEL_IGNORED"] = XlManager.fetch_name('AUTO_DEL_IGNORED')
         cls.EXCEL["NO_HIDDEN_FILES_WIN"] = XlManager.fetch_name('NO_HIDDEN_FILES_WIN')
