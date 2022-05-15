@@ -57,38 +57,44 @@ class XlManager():
         @param CFG: 配置信息，来自ConfManager
         @return: 文件数据字典
         '''
-        file_data = {}
         workbook = load_workbook(filename = CFG.BASE['EXCEL_FILE_PATH'], read_only=True)
         sheet_name = CFG.BASE['LIST_SHEET_NAME']
         if sheet_name not in workbook.sheetnames:
             raise Exception('Excel file wrong!')
         ws = workbook[sheet_name]
-        # 表头提取
-        head_start_cell = cls.get_cell_by_value(ws,'key')
-        head_row = ws[head_start_cell.row]
-        # 根据表头确定输出字段顺序
-        output_params = [cell.value for cell in head_row]
-        # 按行提取数据
-        for p_row in range(head_start_cell.row + 2, ws.max_row + 1):
-            cur_row = ws[p_row]
+        # 先快速从表格读取数据为列表
+        data = []
+        is_start = False
+        for row in ws.rows:
+            cur_list = []
+            for cell in row:
+                if not is_start and cell.value == 'key':
+                    is_start = True
+                cur_list.append(cell.value)
+            if is_start:
+                data.append(cur_list)
+        workbook.close()
+        # 列表转为字典
+        excel_data = {}
+        headers = data[0]
+        for row in data[2:]:
             cur_dic = {}
-            for num,cell in enumerate(cur_row):
+            for num,value in enumerate(row):
                 # 跳过key以及没有值的单元格
-                if num == 0 or cell.value is None:continue
-                cur_dic[output_params[num]] = cell.value
+                if num == 0 or value is None:continue
+                cur_dic[headers[num]] = value
             # 确定key
-            list_keys = file_data.keys()
-            if cur_row[0].value:
-                cur_key = cur_row[0].value
+            list_keys = excel_data.keys()
+            if row[0]:
+                cur_key = row[0]
             else:
                 cur_key = None
             key = DataManager.get_key(cur_dic,CFG,list_keys,cur_key)
             # 数据记录
-            file_data[key] = cur_dic
-        workbook.close()
+            excel_data[key] = cur_dic
         # 强制备份Excel数据
-        DataManager.backup_data(file_data)
-        return file_data
+        DataManager.backup_data(excel_data)
+        return excel_data
 
     @classmethod
     def write_data_to_excel(cls,data,CFG):
