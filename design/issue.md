@@ -13,9 +13,10 @@
 - [x] status记录错误（无误）
 - [ ] hyperlink公式未变链接
 - [x] 时间戳未存储为Excel时间格式（Excel日期时间有bug，不采用）
-- [ ] 会产生None|None为key的数据
+- [x] 会产生None|None为key的数据（无法重现，应以解决）
 - [x] 文件链接公式需包含起始文件夹
 - [x] 文件类型公式需容错未知格式
 - [ ] 减小打包文件大小－－使用pipenv
 - [x] 三万五+文件运行缓慢，首次1分钟以内，二次内存溢出（加载Excel数据卡死）（改变读取方式，先快速读取数据。已解决，3分钟之内可完成）
-- [ ] Excel中的日期格式加载错误：datetime格式无法json序列化(excel时间对象需转为时间戳)
+- [x] Excel中的日期格式加载错误：datetime格式无法json序列化(使用openpyxl.utils.datetime.to_excel转化存储）
+- [ ] Excel中的日期刷新后格式消失

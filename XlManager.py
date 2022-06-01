@@ -3,6 +3,7 @@
 import os
 import time
 from openpyxl import load_workbook
+from openpyxl.utils import datetime
 
 from DataManager import DataManager as DataManager
 
@@ -70,7 +71,11 @@ class XlManager():
             for cell in row:
                 if not is_start and cell.value == 'key':
                     is_start = True
-                cur_list.append(cell.value)
+                if cell.value and cell.is_date:    # 处理Excel中记录的时间
+                    new_value = datetime.to_excel(cell.value)
+                else:
+                    new_value = cell.value
+                cur_list.append(new_value)
             if is_start:
                 data.append(cur_list)
         workbook.close()
