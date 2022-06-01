@@ -7,7 +7,7 @@
 - [x] 文件类型的输出
 - [x] 时间戳转化为Excel可用
 - [x] 错误的UI提示
-- [ ] 可打开文件所在文件夹（通过加一列hyperlink公式实现，os.path.dirname）
+- [x] 可打开文件所在文件夹（通过加一列hyperlink公式实现，os.path.dirname）
 
 ## bug
 - [x] status记录错误（无误）

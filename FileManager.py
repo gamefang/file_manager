@@ -52,7 +52,7 @@ class FileManager():
                 full_path = os.path.join(root,fn)
                 if cls.need_pass(full_path,CFG):   # 跳过隐藏文件
                     continue
-                cur_dic['path'] = os.path.relpath(full_path,folder)
+                cur_dic['path'] = os.path.dirname(os.path.relpath(full_path,folder))    # 只存文件夹
                 # 文件名、扩展名
                 cur_dic['filename'],ext = os.path.splitext(fn)
                 cur_dic['ext'] = ext[1:]   # 去掉.

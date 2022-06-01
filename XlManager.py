@@ -133,9 +133,14 @@ class XlManager():
                 if item == 'key':
                     cur_v = k
                 # 自动套用公式
-                elif item == 'hyperlink':
-                    ref_cell_addr = ws.cell(p_row,output_params.index('path')+1).coordinate
-                    cur_v = f'=HYPERLINK(BASE_FOLDER&"/"&{ref_cell_addr},"打开")'
+                elif item == 'folder_link':
+                    ref_path = ws.cell(p_row,output_params.index('path')+1).coordinate
+                    cur_v = f'=HYPERLINK(BASE_FOLDER&"/"&{ref_path},"打开")'
+                elif item == 'file_link':
+                    ref_path = ws.cell(p_row,output_params.index('path')+1).coordinate
+                    ref_filename = ws.cell(p_row,output_params.index('filename')+1).coordinate
+                    ref_ext = ws.cell(p_row,output_params.index('ext')+1).coordinate
+                    cur_v = f'=HYPERLINK(BASE_FOLDER&"/"&{ref_path}&"/"&{ref_filename}&"."&{ref_ext},"打开")'
                 elif item == 'filetype':
                     ref_cell_addr = ws.cell(p_row,output_params.index('ext')+1).coordinate
                     cur_v = f'=IFERROR(VLOOKUP({ref_cell_addr},rEXT_TO_TYPE,2,),"")'

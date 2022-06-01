@@ -38,8 +38,9 @@ filename|文件名|string|代码|
 ext|扩展名|string|代码|
 filetype|文件类型|无|代码-公式|在Excel中自定义后映射
 is_folder|是文件夹|bool|代码|
-path|文件路径|string|代码|仅记录相对路径
-hyperlink|文件链接|无|代码-公式|通过path计算
+path|文件夹路径|string|代码|仅记录相对路径
+folder_link|文件夹链接|无|代码-公式|通过path计算
+file_link|文件链接|无|代码-公式|通过path计算
 size|文件大小|int|代码|
 ctime|创建时间|int|代码|Excel浮点数不稳，改用整数
 mtime|修改时间|int|代码|
@@ -62,7 +63,7 @@ data = {
 
 key|名称|类型|默认值|说明
 --|--|--|--|--
-BASE_FOLDER|起始文件夹|string||递归搜索的文件夹起点，留空即Excel文件所属文件夹
+BASE_FOLDER|起始文件夹|string||递归搜索的文件夹起点，留空即Excel文件所属文件夹(加载后会自动规范化处理)
 AUTO_BACKUP|生成列表前自动备份|bool|False|自动备份list文件，生成备份sheet
 AUTO_DEL_IGNORED|自动删除被排除文件数据|bool|True|如文件行被标记为del，则自动删除（可能导致部分自定义数据丢失）
 NO_HIDDEN_FILES_WIN|排除隐藏文件（Windows）|bool|True|不输出Windows环境下的隐藏文件至列表中
