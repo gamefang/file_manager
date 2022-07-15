@@ -99,3 +99,6 @@ key = '1651909589|2261+2'
 - config页结构调整：可任意调整各类config的位置
 - 自定义Excel文件及Sheet名称：通过修改`FileManager.json`文件，可自定义Excel文件名、Sheet名
 - 每次自动覆盖式备份Excel数据至`.backup.json`，如需还原可转化为csv等使用(https://data.page/json/csv)
+
+## 其余小工具
+- filebat：对文件批量移动、重命名、删除等功能的工具。
